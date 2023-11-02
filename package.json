@@ -1,0 +1,88 @@
+{
+  "name": "vue-music",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "npm run lint:code && npm run lint:style",
+    "lint:code": "vue-cli-service lint",
+    "lint:style": "vue-cli-service lint:style",
+    "deploy": "npm run build && pm2 start backend/prod.server.js -i max",
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,tsx,vue}": [
+      "vue-cli-service lint"
+    ],
+    "src/**/*.{vue,htm,html,css,sss,less,scss}": [
+      "vue-cli-service lint:style"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "@better-scroll/core": "^2.4.2",
+    "@better-scroll/observe-dom": "^2.4.2",
+    "@better-scroll/pull-up": "^2.4.2",
+    "@better-scroll/slide": "^2.4.2",
+    "@vueuse/core": "^8.2.0",
+    "axios": "^0.26.1",
+    "axios-retry": "^3.2.4",
+    "cookie-parser": "^1.4.6",
+    "core-js": "^3.21.1",
+    "create-keyframe-animation": "^0.1.0",
+    "good-storage": "^1.1.1",
+    "lyric-parser": "^1.0.1",
+    "register-service-worker": "^1.7.2",
+    "vue": "^3.2.31",
+    "vue-router": "^4.0.14",
+    "vue3-lazy": "^1.0.0-alpha.1",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "@samhammer/vue-cli-plugin-stylelint": "^2.1.0",
+    "@types/good-storage": "^1.1.0",
+    "@types/lyric-parser": "^1.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "@vue/cli-plugin-babel": "~5.0.4",
+    "@vue/cli-plugin-eslint": "~5.0.4",
+    "@vue/cli-plugin-pwa": "~5.0.4",
+    "@vue/cli-plugin-router": "~5.0.4",
+    "@vue/cli-plugin-typescript": "~5.0.4",
+    "@vue/cli-plugin-vuex": "~5.0.4",
+    "@vue/cli-service": "~5.0.4",
+    "@vue/eslint-config-standard": "^6.1.0",
+    "@vue/eslint-config-typescript": "^10.0.0",
+    "commitizen": "^4.2.4",
+    "compression-webpack-plugin": "^9.2.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.12.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-vue": "^8.5.0",
+    "js-base64": "^3.7.2",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "lint-staged": "^12.3.7",
+    "pinyin": "^2.11.1",
+    "postcss-html": "^1.3.0",
+    "postcss-less": "^6.0.0",
+    "stylelint": "^14.6.1",
+    "stylelint-config-html": "^1.0.0",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-recommended-vue": "^1.4.0",
+    "stylelint-config-standard": "^25.0.0",
+    "stylelint-order": "^5.0.0",
+    "terser-webpack-plugin": "^5.3.1",
+    "typescript": "~4.6.3",
+    "xsrf": "^1.0.0"
+  }
+}
