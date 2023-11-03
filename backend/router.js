@@ -6,6 +6,7 @@ const axios = require('axios')
 const pinyin = require('pinyin')
 const Base64 = require('js-base64').Base64
 const getSecuritySign = require('./sign') // 获取签名方法
+const { RegisterNetEaseMusicApi } = require('./NetEaseApi')
 
 const ERR_OK = 0
 const token = 5381
@@ -738,7 +739,7 @@ function registerRouter (app) {
 
   registerHotKeys(app)
 
-  registerSearch(app)
+ RegisterNetEaseMusicApi(app)
 }
 
 module.exports = registerRouter
