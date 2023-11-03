@@ -100,7 +100,7 @@ export default defineComponent({
     // hooks
     const { isPullUpLoad, rootRef, scroll } = usePullUpLoad({ fetchData: searchMore, preventPullUpLoad })
 
-    /** 首次请求 */
+    /** 首次搜索 */
     async function searchFirst (): Promise<void> {
       if (!props.query) return
       state.page = 1
@@ -120,19 +120,21 @@ export default defineComponent({
       }
     }
 
-    /** 请求更多  Promise<void>  */
+    /** 搜索更多  */
     async function searchMore (): Promise<void> {
-      // if (!state.hasMore || !props.query) return
-      // state.page++
-      // const { result } = await SearchServer.search({
-      //   query: props.query,
-      //   limit: this.perpage,
-      //   offset: (this.page - 1) * this.perpage,
-      // })
-      // state.songs = state.songs.concat(await processSongs(songs))
-      // state.hasMore = hasMore
-      // await nextTick()
-      // await makeItScrollable()
+      if (!state.hasMore || !props.query) return
+      state.page++
+      const { result, code } = await SearchServer.search({
+        keywords: props.query,
+        limit: state.pageSize,
+        offset: (state.page - 1) * state.pageSize
+      })
+      if (code === 200) {
+        state.songs = state.songs.concat(await createSongs(result.songs))
+        state.hasMore = checkMore(result)
+        await nextTick()
+        await makeItScrollable()
+      }
     }
 
     /** 手动控制加载 */
