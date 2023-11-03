@@ -38,7 +38,7 @@ const RegisterNetEaseMusicApi = async (app) =>{
   const special = {
     'search.js': '/api/NetEaseSearch',
     'song_url.js': '/api/getSongNetEase',
-    'lyric.js': '/api/getNetEaseLyric',
+    'lyric.js': '/api/getNetEaseLyric'
   }
 
   /**

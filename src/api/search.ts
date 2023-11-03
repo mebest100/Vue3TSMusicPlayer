@@ -1,5 +1,6 @@
+import axios from 'axios'
 import request from '@/utils/request'
-import type { HotKeyResp, SearchReq, SearchResp } from '@/types/api/search'
+import type { HotKeyResp, SearchReq } from '@/types/api/search'
 
 export default class SearchServer {
   static getHotKeys (): Promise<HotKeyResp> {
@@ -9,11 +10,10 @@ export default class SearchServer {
     })
   }
 
-  static search (params: SearchReq): Promise<SearchResp> {
-    return request.request({
-      url: '/search',
-      method: 'get',
-      params
+  static search (params: SearchReq): Promise<any> {
+    const url = '/api/NetEaseSearch'
+    return axios.get(url, { params }).then(res => {
+      return Promise.resolve(res.data)
     })
   }
 }

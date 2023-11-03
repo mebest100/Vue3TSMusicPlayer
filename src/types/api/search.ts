@@ -12,8 +12,8 @@ export interface HotKeyResp {
 
 export interface SearchReq {
   query: string;
-  page: number,
-  showSinger: boolean;
+  limit: number,
+  offset: number;
 }
 
 export interface SearchResp extends AlbumResp {

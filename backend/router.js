@@ -620,28 +620,7 @@ function registerSearch (app) {
 
     const { query, page, showSinger } = req.query
 
-    const data = {
-      _: getRandomVal(),
-      g_tk_new_20200303: token,
-      w: query,
-      p: page,
-      perpage: 20,
-      n: 20,
-      zhidaqu: 1,
-      catZhida: showSinger === 'true' ? 1 : 0,
-      t: 0,
-      flag: 1,
-      ie: 'utf-8',
-      sem: 1,
-      aggr: 0,
-      remoteplace: 'txt.mqq.all',
-      uin: '0',
-      needNewCode: 1,
-      platform: 'h5',
-      format: 'json'
-    }
-
-    const data2 = JSON.stringify({
+    const data = JSON.stringify({
       comm: { ct: 19, cv: 1845 },
       searchMusic: {
         method: 'DoSearchForQQMusicDesktop',
@@ -657,7 +636,7 @@ function registerSearch (app) {
     // const randomKey = getRandomVal('getUCGI')
     // const sign = getSecuritySign(data)
 
-    post(url, data2)
+    post(url, data)
       .then((response) => {
         const data = response.data
         if (data.code === ERR_OK) {

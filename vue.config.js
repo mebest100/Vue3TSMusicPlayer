@@ -34,7 +34,7 @@ module.exports = defineConfig({
   // 在生成的 HTML 中的 <link rel="stylesheet"> 和 <script> 标签上启用 Subresource Integrity (SRI)
   integrity: false,
   // webpack配置
-  configureWebpack: config => {
+  configureWebpack: (config) => {
     // config.optimization.runtimeChunk = 'single'
     // config.name = name
     const plugins = [
@@ -42,21 +42,17 @@ module.exports = defineConfig({
       new TerserPlugin({
         terserOptions: {
           compress: {
-            drop_console: true
-          }
-        }
+            drop_console: true,
+          },
+        },
       }),
       // gzip压缩
       new CompressionWebpackPlugin({
         filename: '[path][base].gz',
         algorithm: 'gzip',
-        test: new RegExp(
-          '\\.(' +
-          ['js', 'css'].join('|') +
-          ')$'
-        ),
+        test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$'),
         threshold: 10240,
-        minRatio: 0.8
+        minRatio: 0.8,
       }),
       // brotli压缩
       new CompressionWebpackPlugin({
@@ -64,16 +60,15 @@ module.exports = defineConfig({
         algorithm: 'brotliCompress',
         test: /\.(js|css|html|svg)$/,
         threshold: 10240,
-        minRatio: 0.8
-      })
-    ]
+        minRatio: 0.8,
+      }),
+    ];
     if (process.env.NODE_ENV === 'production') {
-      config.plugins = [...config.plugins, ...plugins]
+      config.plugins = [...config.plugins, ...plugins];
     }
   },
-  chainWebpack: config => {
-    config.resolve.alias
-      .set('@', resolve('src'))
+  chainWebpack: (config) => {
+    config.resolve.alias.set('@', resolve('src'));
   },
   // css相关配置
   css: {
@@ -84,19 +79,19 @@ module.exports = defineConfig({
       less: {
         lessOptions: {
           modifyVars: {},
-          javascriptEnabled: true
+          javascriptEnabled: true,
         },
         // 全局引入变量和 mixin
         additionalData: `
           @import "@/assets/styles/variables.less";
           @import "@/assets/styles/mixins.less";
-        `
-      }
-    }
+        `,
+      },
+    },
   },
   // webpack-dev-server配置
   devServer: {
-    open: false, // 打开浏览器
+    progress: false, // 禁止启动时显示编译日志
     client: {
       overlay: {
         warnings: false,
@@ -107,7 +102,7 @@ module.exports = defineConfig({
     port: 8070,
     https: false,
     proxy: null, // 设置代理
-    onBeforeSetupMiddleware: ({ app }) => registerRouter(app)
+    onBeforeSetupMiddleware: ({ app }) => registerRouter(app),
   },
   // 使用ts-import-plugin parallel设置为false，原因参考https://www.jianshu.com/p/201ed7363a56
   parallel: false,
@@ -118,27 +113,23 @@ module.exports = defineConfig({
     msTileColor: '#222',
     workboxOptions: {
       skipWaiting: true,
-      clientsClaim: true
+      clientsClaim: true,
     },
     iconPaths: {
       favicon32: 'favicon.ico',
       favicon16: 'favicon.ico',
       appleTouchIcon: 'favicon.ico',
       maskIcon: 'favicon.ico',
-      msTileImage: 'favicon.ico'
-    }
-
+      msTileImage: 'favicon.ico',
+    },
   },
   // 第三方插件选项
   pluginOptions: {
     lintStyleOnBuild: true,
-    stylelint:
-      {
-        fix: true,
-        files:
-          'src/**/*.{vue,htm,html,css,sss,less,scss}',
-        formatter:
-          () => {}
-      }
-  }
-})
+    stylelint: {
+      fix: true,
+      files: 'src/**/*.{vue,htm,html,css,sss,less,scss}',
+      formatter: () => {},
+    },
+  },
+});

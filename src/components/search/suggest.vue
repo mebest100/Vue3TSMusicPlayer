@@ -6,7 +6,7 @@
     v-no-result:[noResultText]="noResult"
   >
     <ul class="suggest-list">
-      <li
+      <!-- <li
         class="suggest-item"
         v-if="singer"
         @click="selectSinger(singer)"
@@ -17,7 +17,7 @@
         <div class="name">
           <p class="text">{{ singer.name }}</p>
         </div>
-      </li>
+      </li> -->
       <li
         class="suggest-item"
         v-for="item in songs"
@@ -43,20 +43,20 @@
 
 <script lang="ts">
 import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
-import { processSongs } from '@/api/song'
+import { createSongs } from '@/api/song'
 import SearchServer from '@/api/search'
 import { usePullUpLoad } from './use-pull-up-load'
 import type { Singer } from '@/types/api/singer'
 import type { Song } from '@/types/api/recommend'
 
 interface State {
-  /** 歌手 */
-  singer: Singer | undefined;
   /** 歌曲列表 */
   songs: Song[];
   /** 是否有下一页 */
   hasMore: boolean;
-  /** 分页 */
+  /** 每页条数 */
+  pageSize: number
+  /** 当前页码 */
   page: number;
   /** 加载文案 */
   loadingText: string;
@@ -83,17 +83,17 @@ export default defineComponent({
   emits: ['select-song', 'select-singer'],
   setup (props, { emit }) {
     const state = reactive<State>({
-      singer: undefined,
+      pageSize: 30,
+      page: 1,
       songs: [],
       hasMore: true,
-      page: 1,
       loadingText: '',
       noResultText: '抱歉，暂无搜索结果',
       manualLoading: false
     })
 
-    const loading = computed(() => !state.singer && !state.songs.length)
-    const noResult = computed(() => !state.singer && !state.songs.length && !state.hasMore)
+    const loading = computed(() => !state.songs.length)
+    const noResult = computed(() => !state.songs.length && !state.hasMore)
     const pullUpLoading = computed(() => isPullUpLoad.value && state.hasMore)
     const preventPullUpLoad = computed(() => loading.value || state.manualLoading)
 
@@ -105,34 +105,34 @@ export default defineComponent({
       if (!props.query) return
       state.page = 1
       state.songs = []
-      state.singer = undefined
       state.hasMore = true
 
-      const { songs, singer, hasMore } = await SearchServer.search({
+      const { result, code } = await SearchServer.search({
         query: props.query,
-        page: state.page,
-        showSinger: props.showSinger
+        limit: state.pageSize,
+        offset: (state.page - 1) * state.pageSize
       })
-      state.songs = await processSongs(songs)
-      state.singer = singer
-      state.hasMore = hasMore
-      await nextTick()
-      await makeItScrollable()
+      if (code === 200) {
+        state.songs = await createSongs(result.songs)
+        state.hasMore = checkMore(result)
+        await nextTick()
+        await makeItScrollable()
+      }
     }
 
-    /** 请求更多 */
+    /** 请求更多  Promise<void>  */
     async function searchMore (): Promise<void> {
-      if (!state.hasMore || !props.query) return
-      state.page++
-      const { songs, hasMore } = await SearchServer.search({
-        query: props.query,
-        page: state.page,
-        showSinger: props.showSinger
-      })
-      state.songs = state.songs.concat(await processSongs(songs))
-      state.hasMore = hasMore
-      await nextTick()
-      await makeItScrollable()
+      // if (!state.hasMore || !props.query) return
+      // state.page++
+      // const { result } = await SearchServer.search({
+      //   query: props.query,
+      //   limit: this.perpage,
+      //   offset: (this.page - 1) * this.perpage,
+      // })
+      // state.songs = state.songs.concat(await processSongs(songs))
+      // state.hasMore = hasMore
+      // await nextTick()
+      // await makeItScrollable()
     }
 
     /** 手动控制加载 */
@@ -152,6 +152,19 @@ export default defineComponent({
     /** 选择歌曲 */
     function selectSong (song: Song): void {
       emit('select-song', song)
+    }
+
+    function checkMore (data:any): boolean {
+      console.log('checkmore收到数据==》', data)
+      // let songs = data.songs;
+      if (
+        // data.songCount == 0
+        state.songs.length >= data.songCount
+        // (this.page - 1) * this.perpage + songs.length > data.songCount
+      ) {
+        state.hasMore = false
+      }
+      return state.hasMore
     }
 
     watch(
