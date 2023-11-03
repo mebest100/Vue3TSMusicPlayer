@@ -91,7 +91,6 @@ module.exports = defineConfig({
   },
   // webpack-dev-server配置
   devServer: {
-    progress: false, // 禁止启动时显示编译日志
     client: {
       overlay: {
         warnings: false,

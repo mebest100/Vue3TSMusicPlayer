@@ -108,7 +108,7 @@ export default defineComponent({
       state.hasMore = true
 
       const { result, code } = await SearchServer.search({
-        query: props.query,
+        keywords: props.query,
         limit: state.pageSize,
         offset: (state.page - 1) * state.pageSize
       })

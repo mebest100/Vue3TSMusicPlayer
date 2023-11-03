@@ -11,7 +11,7 @@ export interface HotKeyResp {
 }
 
 export interface SearchReq {
-  query: string;
+  keywords: string;
   limit: number,
   offset: number;
 }
