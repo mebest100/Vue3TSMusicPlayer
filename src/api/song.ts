@@ -39,6 +39,34 @@ export default class SongServer {
 
     return songurl
   }
+
+  static getNetEaseLyric (mid: string): Promise<string> {
+    // console.log("getLyric执行了");
+
+    return new Promise((resolve, reject) => {
+      // console.log("getLyric进入了ajax分支");
+      const url = '/api/getNetEaseLyric' // 注意这里url之前一定要const关键字，否则ajax请求不会发起，因为axios在url为undefined时不会发起请求
+      axios.get(url, { params: { id: mid } }).then(
+        ({
+          data: {
+            lrc: { lyric },
+            code
+          }
+        }) => {
+          // console.log("data==>", data)
+          // const {
+          //   lrc: { lyrics },
+          //   code,
+          // } = data;
+          if (code === 200) {
+            resolve(lyric)
+          } else {
+            resolve('[00:00:00]该歌曲暂时无法获取歌词')
+          }
+        }
+      )
+    })
+  }
 }
 
 /**
@@ -96,6 +124,14 @@ export function processLyric (song: Song): Promise<string> {
   const mid = song.mid
   const lyric = lyricMap[mid]
   if (lyric) return Promise.resolve(lyric)
+
+  if (song.type) {
+    return SongServer.getNetEaseLyric(mid).then((res) => {
+      const lyric = res
+      lyricMap[mid] = lyric
+      return lyric
+    })
+  }
 
   return SongServer.getLyric({ mid }).then((res) => {
     const lyric = res ? res.lyric : '[00:00:00]该歌曲暂时无法获取歌词'

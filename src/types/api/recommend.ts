@@ -31,6 +31,7 @@ export interface Song {
   pic: string;
   album: string;
   lyric?: string;
+  type?: number
 }
 
 export interface AlbumResp {
