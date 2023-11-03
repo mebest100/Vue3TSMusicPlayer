@@ -77,6 +77,7 @@ import type { HotKey } from '@/types/api/search'
 import type { Singer } from '@/types/api/singer'
 import type { BScrollConstructor } from '@better-scroll/core/dist/types/BScroll'
 import type { Song } from '@/types/api/recommend'
+import SongServer from '@/api/song'
 
 interface State {
   /** 搜索参数 */
@@ -142,7 +143,9 @@ export default defineComponent({
     }
 
     /** 选中歌曲 */
-    function selectSong (song: Song): void {
+    async function selectSong (song: Song): Promise<void> {
+      const songUrl = await SongServer.getNetEaseSongUrl(song.mid)
+      song.url = songUrl
       saveSearch(state.query)
       store.dispatch('addSong', song)
     }

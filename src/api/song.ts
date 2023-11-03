@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import axios from 'axios'
 import type { SingerDetailReq } from '@/types/api/singer'
 import type { LyricResp, SongUrlReq, SongUrlResp } from '@/types/api/song'
 import type { Song } from '@/types/api/recommend'
@@ -8,20 +9,35 @@ interface LyricMap {
 }
 
 export default class SongServer {
-  static getSongUrl(params: SongUrlReq): Promise<SongUrlResp> {
+  static getSongUrl (params: SongUrlReq): Promise<SongUrlResp> {
     return request.request({
       url: '/getSongsUrl',
       method: 'get',
-      params,
+      params
     })
   }
 
-  static getLyric(params: SingerDetailReq): Promise<LyricResp> {
+  static getLyric (params: SingerDetailReq): Promise<LyricResp> {
     return request.request({
       url: '/getLyric',
       method: 'get',
-      params,
+      params
     })
+  }
+
+  static async getNetEaseSongUrl (mid: string) {
+    // console.log("开始获取网易云音乐歌曲播放链接.....")
+    const url = '/api/getSongNetEase'
+
+    const res = await axios.get(url, {
+      params: {
+        id: mid
+      }
+    })
+    console.log('song data==>', res.data.data)
+    const songurl = res.data.data[0].url
+
+    return songurl
   }
 }
 
@@ -29,7 +45,7 @@ export default class SongServer {
  * 批量获取歌曲地址
  * @param songs
  */
-export function processSongs(songs: Song[]): Promise<Song[]> {
+export function processSongs (songs: Song[]): Promise<Song[]> {
   if (!songs.length) return Promise.resolve(songs)
   return SongServer.getSongUrl({ mid: songs.map((song) => song.mid) }).then(
     ({ map }) => {
@@ -44,7 +60,7 @@ export function processSongs(songs: Song[]): Promise<Song[]> {
 }
 
 // 构造歌曲song对象
-export function createSong(song: any) {
+export function createSong (song: any) {
   const newSong = {
     id: song.id,
     mid: song.id,
@@ -75,7 +91,7 @@ const lyricMap: LyricMap = {}
  * 处理歌词
  * @param song
  */
-export function processLyric(song: Song): Promise<string> {
+export function processLyric (song: Song): Promise<string> {
   if (song.lyric) return Promise.resolve(song.lyric)
   const mid = song.mid
   const lyric = lyricMap[mid]
