@@ -139,6 +139,8 @@ export default defineComponent({
 
     /** 手动控制加载 */
     async function makeItScrollable (): Promise<void> {
+      // maxScrollY表示父容器可供滚动的纵向距离，ＢＳ源码是这样定义的：maxScrollY = wrapperHeight - indicatorHeight
+      // 所以maxScrollY >= -1表示父级容器高度大于等于内容高度，此时无法滚动
       if (scroll.value && scroll.value.maxScrollY >= -1) {
         state.manualLoading = true
         await searchMore()
@@ -173,6 +175,7 @@ export default defineComponent({
       () => props.query,
       async (newQuery) => {
         if (!newQuery) return
+        state.songs = []
         await searchFirst()
       }
     )

@@ -98,10 +98,11 @@ const RegisterNetEaseMusicApi = async (app) =>{
           }
         }
         res.status(moduleResponse.status).send(moduleResponse.body)
-      } catch ( err) {
+      } catch (err) {
         // 因为err.message是JSON字符串，必须通过JSON.parse转换成对象，否则msg: errData赋值时就会变成： Error: [object Object]
         // 这样msg就获取不到值，变成了空值了
-        const errData = JSON.parse(err.message) //关键点 ：必须使用 JSON.parse方法
+        const errData = err.message //关键点 ：必须使用 JSON.parse方法
+        // const errData = JSON.parse(err.message) //关键点 ：必须使用 JSON.parse方法
         console.log("get Err==>", errData)
         console.log('[ERR]', decode(req.originalUrl), {
           status: err.status,
