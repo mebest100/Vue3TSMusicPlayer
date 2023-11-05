@@ -20,7 +20,7 @@ function insertArray<T> (arr: T[], val: T, compare: (item: T) => boolean, maxLen
  * @param arr
  * @param compare
  */
-function deleteFromArray<T> (arr: T[], compare: (item: T) => boolean) {
+export function deleteFromArray<T> (arr: T[], compare: (item: T) => boolean) {
   const index = arr.findIndex(compare)
   if (index > -1) arr.splice(index, 1)
 }

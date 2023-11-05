@@ -34,6 +34,7 @@
         <div class="list-inner">
           <song-list
             :songs="playHistory"
+            :showDeleteIcon=true
             @select="selectSong"
           />
         </div>

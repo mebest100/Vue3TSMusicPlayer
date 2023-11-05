@@ -2,9 +2,9 @@
   <ul class="song-list">
     <li
       class="item"
-      v-for="(item,index) in songs"
+      v-for="(item, index) in songs"
       :key="item.id"
-      @click="selectItem(item,index)"
+      @click="selectItem(item, index)"
     >
       <div class="rank" v-if="rank">
         <span :class="getRankCls(index)">{{ getRankText(index) }}</span>
@@ -13,13 +13,21 @@
         <h2 class="name">{{ item.name }}</h2>
         <p class="desc">{{ getDesc(item) }}</p>
       </div>
+      <span v-if="showDeleteIcon"
+        class="delete"
+        @click.stop="delSongFromPlayHistory(item)"
+      >
+        <i class="icon-delete"></i>
+      </span>
     </li>
   </ul>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
+import { useStore } from 'vuex'
 import type { Song } from '@/types/api/recommend'
+import { usePlayHistory } from '@/components/player/use-play-history'
 
 export default defineComponent({
   name: 'SongList',
@@ -33,10 +41,16 @@ export default defineComponent({
     rank: {
       type: Boolean,
       default: false
+    },
+    showDeleteIcon: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['select'],
   setup (props, { emit }) {
+    const store = useStore()
+    const { delSongFromPlayHistory } = usePlayHistory()
     /** 详情描述 */
     function getDesc (item: Song): string {
       return `${item.singer}-${item.album}`
@@ -60,13 +74,14 @@ export default defineComponent({
     function selectItem (song: Song, index: number): void {
       emit('select', { song, index })
     }
+    /** 删除歌曲 */
 
     return {
       getDesc,
       getRankCls,
       getRankText,
-
-      selectItem
+      selectItem,
+      delSongFromPlayHistory
     }
   }
 })
@@ -128,6 +143,11 @@ export default defineComponent({
         .text-overflow-hidden();
       }
     }
+  }
+
+  .delete {
+    color: @color-theme;
+    font-size: @font-size-small;
   }
 }
 </style>
