@@ -54,8 +54,8 @@ import { usePlayHistory } from '@/components/player/use-play-history'
 import Confirm from '@/components/base/confirm/index.vue'
 
 interface State {
-  confirmRef1: any;
-  confirmRef2: any;
+  confirmRef1: Ref | null;
+  confirmRef2: Ref | null;
   // Ref<HTMLDivElement>
 }
 
@@ -83,8 +83,8 @@ export default defineComponent({
   emits: ['select'],
   setup (props, { emit }) {
     const state = reactive<State>({
-      confirmRef1: document.createElement('div'),
-      confirmRef2: document.createElement('div')
+      confirmRef1: ref<HTMLElement | null>(null),
+      confirmRef2: ref<HTMLElement | null>(null)
       // ref<HTMLDivElement>(document.createElement('div'))
     })
     const { delSongFromPlayHistory, clearPlayHistory } = usePlayHistory()
@@ -120,6 +120,7 @@ export default defineComponent({
     }
 
     return {
+      // toRefs解构出来的变量不需要再通过value取值，切记！！！
       ...toRefs(state), // 这句是关键，否则会报错xxx in not a function
       getDesc,
       getRankCls,
