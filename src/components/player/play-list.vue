@@ -61,7 +61,7 @@
           </div>
         </div>
         <confirm
-          ref="confirmRef"
+          ref="confirmRef1"
           text="是否清空播放列表？"
           confirm-btn-text="清空"
           @confirm="confirmClear"
@@ -91,7 +91,7 @@ interface State {
   /** 列表实例 */
   listRef: any;
   /** confirm 实例 */
-  confirmRef: any;
+  confirmRef1: any;
   /** addSong 实例 */
   addSongRef: any;
   /** 显示播放列表 */
@@ -112,7 +112,7 @@ export default defineComponent({
     const state = reactive<State>({
       scrollRef: undefined,
       listRef: document.createElement('div'),
-      confirmRef: document.createElement('div'),
+      confirmRef1: document.createElement('div'),
       addSongRef: document.createElement('div'),
       visible: false,
       removing: false
@@ -179,7 +179,7 @@ export default defineComponent({
 
     /** 显示确认弹框 */
     function showConfirm (): void {
-      state.confirmRef.show()
+      state.confirmRef1.show()
     }
 
     /** 清空播放列表  */

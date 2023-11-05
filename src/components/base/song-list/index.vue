@@ -1,5 +1,11 @@
 <template>
   <ul class="song-list">
+    <span class="clear" @click="showConfirm" v-if="showDeleteIcon">
+      <i class="icon-clear"></i>
+    </span>
+    <!-- 清除浮动 -->
+    <div class="clear-float"></div>
+
     <li
       class="item"
       v-for="(item, index) in songs"
@@ -13,7 +19,8 @@
         <h2 class="name">{{ item.name }}</h2>
         <p class="desc">{{ getDesc(item) }}</p>
       </div>
-      <span v-if="showDeleteIcon"
+      <span
+        v-if="showDeleteIcon"
         class="delete"
         @click.stop="delSongFromPlayHistory(item)"
       >
@@ -21,16 +28,42 @@
       </span>
     </li>
   </ul>
+  <confirm
+    ref="confirmRef1"
+    @confirm="clearPlayHistory"
+    text="是否清空所有播放历史"
+    confirm-btn-text="清空"
+  ></confirm>
+
+  <confirm
+    ref="confirmRef2"
+    @confirm="
+      () => {
+        return;
+      }
+    "
+    text="播放历史为空，无法清空歌曲"
+    confirm-btn-text="确定"
+  ></confirm>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
-import { useStore } from 'vuex'
+import { reactive, toRefs, defineComponent, PropType, Ref, ref } from 'vue'
 import type { Song } from '@/types/api/recommend'
 import { usePlayHistory } from '@/components/player/use-play-history'
+import Confirm from '@/components/base/confirm/index.vue'
+
+interface State {
+  confirmRef1: any;
+  confirmRef2: any;
+  // Ref<HTMLDivElement>
+}
 
 export default defineComponent({
   name: 'SongList',
+  components: {
+    Confirm
+  },
   props: {
     /** 歌曲列表 */
     songs: {
@@ -49,8 +82,12 @@ export default defineComponent({
   },
   emits: ['select'],
   setup (props, { emit }) {
-    const store = useStore()
-    const { delSongFromPlayHistory } = usePlayHistory()
+    const state = reactive<State>({
+      confirmRef1: document.createElement('div'),
+      confirmRef2: document.createElement('div')
+      // ref<HTMLDivElement>(document.createElement('div'))
+    })
+    const { delSongFromPlayHistory, clearPlayHistory } = usePlayHistory()
     /** 详情描述 */
     function getDesc (item: Song): string {
       return `${item.singer}-${item.album}`
@@ -74,14 +111,23 @@ export default defineComponent({
     function selectItem (song: Song, index: number): void {
       emit('select', { song, index })
     }
-    /** 删除歌曲 */
+    function showConfirm (): void {
+      if (props.songs.length > 0) {
+        state.confirmRef1.show()
+        return
+      }
+      state.confirmRef2.show()
+    }
 
     return {
+      ...toRefs(state), // 这句是关键，否则会报错xxx in not a function
       getDesc,
       getRankCls,
       getRankText,
       selectItem,
-      delSongFromPlayHistory
+      delSongFromPlayHistory,
+      showConfirm,
+      clearPlayHistory
     }
   }
 })
@@ -89,6 +135,19 @@ export default defineComponent({
 
 <style scoped lang="less">
 .song-list {
+  .clear {
+    float: right;
+
+    .icon-clear {
+      color: @color-text-d;
+      font-size: @font-size-medium;
+    }
+  }
+
+  .clear-float {
+    clear: both;
+  }
+
   .item {
     display: flex;
     align-items: center;
