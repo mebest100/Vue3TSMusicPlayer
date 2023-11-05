@@ -32,9 +32,9 @@ export function usePlayHistory (): UsePlayHistory {
 
   function clearPlayHistory (): void {
     saveStorage(PLAY_KEY, [])
-    const currentSong = store.getters.currentSong
-    store.dispatch('removeSong', currentSong)
     store.commit(types.SET_PLAY_HISTORY, [])
+    store.commit(types.SET_PLAY_LIST, [])
+    store.commit(types.SET_PLAYING, false)
   }
 
   return {
