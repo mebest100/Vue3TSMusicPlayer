@@ -61,7 +61,7 @@
           </div>
         </div>
         <confirm
-          ref="confirmRef1"
+          ref="confirmRef"
           text="是否清空播放列表？"
           confirm-btn-text="清空"
           @confirm="confirmClear"
@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, reactive, toRefs, watch } from 'vue'
+import { computed, defineComponent, nextTick, reactive, toRefs, watch, Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 import { promiseTimeout } from '@vueuse/core'
 import Scroll from '@/components/wrap-scroll/index'
@@ -91,7 +91,7 @@ interface State {
   /** 列表实例 */
   listRef: any;
   /** confirm 实例 */
-  confirmRef1: any;
+  confirmRef: Ref | null;
   /** addSong 实例 */
   addSongRef: any;
   /** 显示播放列表 */
@@ -112,7 +112,7 @@ export default defineComponent({
     const state = reactive<State>({
       scrollRef: undefined,
       listRef: document.createElement('div'),
-      confirmRef1: document.createElement('div'),
+      confirmRef: ref(null),
       addSongRef: document.createElement('div'),
       visible: false,
       removing: false
@@ -179,7 +179,7 @@ export default defineComponent({
 
     /** 显示确认弹框 */
     function showConfirm (): void {
-      state.confirmRef1.show()
+      state.confirmRef.show()
     }
 
     /** 清空播放列表  */
