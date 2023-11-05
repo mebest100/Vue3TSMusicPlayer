@@ -143,11 +143,12 @@ export default defineComponent({
     }
 
     /** 选中歌曲 */
-    async function selectSong (song: Song): Promise<void> {
-      const songUrl = await SongServer.getNetEaseSongUrl(song.mid)
-      song.url = songUrl
-      saveSearch(state.query)
-      store.dispatch('addSong', song)
+    function selectSong (song: Song): void {
+      SongServer.getNetEaseSongUrl(song.mid).then((data) => {
+        song.url = data
+        saveSearch(state.query)
+        store.dispatch('addSong', song)
+      })
     }
 
     /** 缓存歌手 */
