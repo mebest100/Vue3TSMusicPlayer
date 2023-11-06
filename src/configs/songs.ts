@@ -1,7 +1,6 @@
 import store from '@/store'
-import { load, saveAll } from '@/utils/array-store'
+import { load } from '@/utils/array-store'
 import { FAVORITE_KEY, PLAY_KEY } from '@/utils/constants'
-import { processSongs } from '@/api/song'
 import * as types from '@/store/mutationTypes'
 import type { Song } from '@/types/api/recommend'
 
