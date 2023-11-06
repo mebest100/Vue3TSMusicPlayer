@@ -10,7 +10,8 @@ const resolve = dir => path.join(__dirname, dir)
 
 module.exports = defineConfig({
   // 基本路径
-  publicPath: process.env.NODE_ENV === 'production' ? '/vue-music/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
+  // publicPath: process.env.NODE_ENV === 'production' ? '/vue-music/' : '/',
   // 输出文件目录
   outputDir: 'dist',
   // 用于嵌套生成的静态资产（js，css，img，fonts）的目录
@@ -42,9 +43,9 @@ module.exports = defineConfig({
       new TerserPlugin({
         terserOptions: {
           compress: {
-            drop_console: true,
-          },
-        },
+            drop_console: true
+          }
+        }
       }),
       // gzip压缩
       new CompressionWebpackPlugin({
@@ -52,7 +53,7 @@ module.exports = defineConfig({
         algorithm: 'gzip',
         test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$'),
         threshold: 10240,
-        minRatio: 0.8,
+        minRatio: 0.8
       }),
       // brotli压缩
       new CompressionWebpackPlugin({
@@ -60,15 +61,15 @@ module.exports = defineConfig({
         algorithm: 'brotliCompress',
         test: /\.(js|css|html|svg)$/,
         threshold: 10240,
-        minRatio: 0.8,
-      }),
-    ];
+        minRatio: 0.8
+      })
+    ]
     if (process.env.NODE_ENV === 'production') {
-      config.plugins = [...config.plugins, ...plugins];
+      config.plugins = [...config.plugins, ...plugins]
     }
   },
   chainWebpack: (config) => {
-    config.resolve.alias.set('@', resolve('src'));
+    config.resolve.alias.set('@', resolve('src'))
   },
   // css相关配置
   css: {
@@ -79,15 +80,15 @@ module.exports = defineConfig({
       less: {
         lessOptions: {
           modifyVars: {},
-          javascriptEnabled: true,
+          javascriptEnabled: true
         },
         // 全局引入变量和 mixin
         additionalData: `
           @import "@/assets/styles/variables.less";
           @import "@/assets/styles/mixins.less";
-        `,
-      },
-    },
+        `
+      }
+    }
   },
   // webpack-dev-server配置
   devServer: {
@@ -101,7 +102,7 @@ module.exports = defineConfig({
     port: 8070,
     https: false,
     proxy: null, // 设置代理
-    onBeforeSetupMiddleware: ({ app }) => registerRouter(app),
+    onBeforeSetupMiddleware: ({ app }) => registerRouter(app)
   },
   // 使用ts-import-plugin parallel设置为false，原因参考https://www.jianshu.com/p/201ed7363a56
   parallel: false,
@@ -112,15 +113,15 @@ module.exports = defineConfig({
     msTileColor: '#222',
     workboxOptions: {
       skipWaiting: true,
-      clientsClaim: true,
+      clientsClaim: true
     },
     iconPaths: {
       favicon32: 'favicon.ico',
       favicon16: 'favicon.ico',
       appleTouchIcon: 'favicon.ico',
       maskIcon: 'favicon.ico',
-      msTileImage: 'favicon.ico',
-    },
+      msTileImage: 'favicon.ico'
+    }
   },
   // 第三方插件选项
   pluginOptions: {
@@ -128,7 +129,7 @@ module.exports = defineConfig({
     stylelint: {
       fix: true,
       files: 'src/**/*.{vue,htm,html,css,sss,less,scss}',
-      formatter: () => {},
-    },
-  },
-});
+      formatter: () => {}
+    }
+  }
+})
