@@ -11,10 +11,7 @@ import type { Song } from '@/types/api/recommend'
 export function setupSongs (): void {
   const favoriteSongs = load<Song>(FAVORITE_KEY)
   if (favoriteSongs.length > 0) {
-    processSongs(favoriteSongs).then(songs => {
-      store.commit(types.SET_FAVORITE_LIST, songs)
-      saveAll(songs, FAVORITE_KEY)
-    })
+    store.commit(types.SET_FAVORITE_LIST, favoriteSongs)
   }
 
   const historySongs = load<Song>(PLAY_KEY)
