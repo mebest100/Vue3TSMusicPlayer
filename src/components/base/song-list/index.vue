@@ -121,7 +121,7 @@ export default defineComponent({
 
     return {
       // toRefs解构出来的变量不需要再通过value取值，切记！！！
-      ...toRefs(state), // 这句是关键，否则会报错xxx in not a function
+      ...toRefs(state), // 这句是关键，否则会报错Uncaught TypeError: Cannot read properties of null
       getDesc,
       getRankCls,
       getRankText,
