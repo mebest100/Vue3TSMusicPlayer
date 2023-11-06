@@ -10,7 +10,7 @@ import type { Song } from '@/types/api/recommend'
  * */
 export function setupSongs (): void {
   const favoriteSongs = load<Song>(FAVORITE_KEY)
-  if (favoriteSongs.length) {
+  if (favoriteSongs.length > 0) {
     processSongs(favoriteSongs).then(songs => {
       store.commit(types.SET_FAVORITE_LIST, songs)
       saveAll(songs, FAVORITE_KEY)
@@ -18,10 +18,7 @@ export function setupSongs (): void {
   }
 
   const historySongs = load<Song>(PLAY_KEY)
-  if (historySongs.length) {
-    processSongs(historySongs).then(songs => {
-      store.commit(types.SET_PLAY_HISTORY, songs)
-      saveAll(songs, PLAY_KEY)
-    })
+  if (historySongs.length > 0) {
+    store.commit(types.SET_PLAY_HISTORY, historySongs)
   }
 }

@@ -31,6 +31,7 @@ export function usePlayHistory (): UsePlayHistory {
   }
 
   function clearPlayHistory (): void {
+    console.log('clearPlayHistory方法执行了')
     saveStorage(PLAY_KEY, [])
     store.commit(types.SET_PLAY_HISTORY, [])
     store.commit(types.SET_PLAY_LIST, [])
