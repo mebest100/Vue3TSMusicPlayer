@@ -25,7 +25,7 @@
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build-electron": "npm run build && npm run electron",
-    "packexe": "electron-builder build --win --x64",
+    "packapp": "electron-builder build --win --x64",
     "runProd": "node backend/prod.server.js",
     "lint": "npm run lint:code && npm run lint:style",
     "lint:code": "vue-cli-service lint",
