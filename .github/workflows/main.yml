@@ -15,6 +15,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '14'
+          
+      - name: Install Wine
+        run: |    
+           apt-get update
+           apt-get install -y wine64 
 
       - name: Install Dependencies
         run: |
