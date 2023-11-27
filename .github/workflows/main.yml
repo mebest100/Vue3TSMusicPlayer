@@ -46,13 +46,13 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Debug Create Release Output
-        run: |
-           echo "Release ID: $RELEASE_ID"
-           echo "Release Upload URL: $RELEASE_UPLOAD_URL"
-        env:
-           RELEASE_ID: ${{ steps.create_release.outputs.id }}
-           RELEASE_UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
+      # - name: Debug Create Release Output
+      #   run: |
+      #      echo "Release ID: $RELEASE_ID"
+      #      echo "Release Upload URL: $RELEASE_UPLOAD_URL"
+      #   env:
+      #      RELEASE_ID: ${{ steps.create_release.outputs.id }}
+      #      RELEASE_UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
 
          
 
@@ -60,8 +60,9 @@ jobs:
         id: upload-release-asset
         uses: actions/upload-release-asset@latest
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
-          upload_url: ${{ env.RELEASE_UPLOAD_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+        with:       
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./build/MyMusicApp.zip # 指定二进制压缩文件路径
           asset_name: MyElectronMusicApp-${{ github.run_number }}.zip
           asset_content_type: application/zip
