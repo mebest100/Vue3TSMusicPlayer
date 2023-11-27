@@ -31,9 +31,9 @@ jobs:
           cd build
           Compress-Archive -Path .\*.exe -DestinationPath MyMusicApp.zip
 
-      # - name: Get package version
-      #   id: get_version
-      #   run: echo "::set-output name=version::$(cat package.json | jq -r .version)"
+      - name: Get package version
+        id: get_version
+        run: echo "::set-output name=version::$(cat package.json | jq -r .version)"
 
       - name: Create Release
         id: create_release
@@ -41,8 +41,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:          
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: v${{ steps.get_version.outputs.version }}  # 使用 package.json 中的版本号
+          release_name: Release v${{ steps.get_version.outputs.version }}
           draft: false
           prerelease: false
          
