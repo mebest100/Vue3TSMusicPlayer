@@ -15,16 +15,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '14'
-
-      - name: Install Dependencies
-        run: |
-          npm install --force
-
+          
       - name: Install windows-build-tools       
         run: |           
            echo 'Closing installer. Return code: 3010.' > $env:TEMP\dd_client_.log
            npm install --global windows-build-tools
         
+
+      - name: Install Dependencies
+        run: |
+          npm install --force
+
+
 
       - name: Build Electron
         run: |
