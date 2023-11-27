@@ -31,7 +31,7 @@
     "lint:code": "vue-cli-service lint",
     "lint:style": "vue-cli-service lint:style",
     "deploy": "npm run build && pm2 start backend/prod.server.js -i max",
-    "postinstall": "husky install"
+    "postinstall": "npx husky install"
   },
   "lint-staged": {
     "src/**/*.{js,ts,tsx,vue}": [
