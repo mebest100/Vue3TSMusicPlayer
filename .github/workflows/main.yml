@@ -45,6 +45,15 @@ jobs:
           release_name: Release v${{ steps.get_version.outputs.version }}
           draft: false
           prerelease: false
+
+      - name: Debug Create Release Output
+        run: |
+           echo "Release ID: $RELEASE_ID"
+           echo "Release Upload URL: $RELEASE_UPLOAD_URL"
+        env:
+           RELEASE_ID: ${{ steps.create_release.outputs.id }}
+           RELEASE_UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
+
          
 
       - name: Upload Release Assets
