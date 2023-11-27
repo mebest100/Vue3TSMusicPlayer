@@ -27,6 +27,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest 
+    steps:
       - name: Find exe files and zip
         run: |
           cd build
