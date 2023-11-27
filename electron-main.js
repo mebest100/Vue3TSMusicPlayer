@@ -83,7 +83,7 @@ function createWindow () {
   Menu.setApplicationMenu(null) // 隐藏顶部菜单
 
   mainWindow.loadURL(`http://localhost:${port}`)
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 app.commandLine.appendSwitch('no-sandbox')

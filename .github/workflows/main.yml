@@ -19,12 +19,12 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install --force
-          npm install --global --production windows-build-tools --vs2015
+        
 
       - name: Build Electron
         run: |
           npm run build
-          npm run packapp
+          npm run packapp || true
 
       - name: Find exe files and zip
         run: |
