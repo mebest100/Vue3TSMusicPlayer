@@ -45,6 +45,7 @@ jobs:
           release_name: Release v${{ steps.get_version.outputs.version }}
           draft: false
           prerelease: false
+          allowUpdates: true
 
       - name: Upload Release Assets
         id: upload-release-asset
