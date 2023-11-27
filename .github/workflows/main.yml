@@ -52,8 +52,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
           RELEASE_VERSION: ${{ steps.get_version.outputs.version }}
         with:     
-          tag_name: v${{ RELEASE_VERSION }} # 使用 package.json 中的版本号
-          release_name: Release v${{ RELEASE_VERSION }}
+          tag_name: v${{ env.RELEASE_VERSION }} # 使用 package.json 中的版本号
+          release_name: Release v${{ env.RELEASE_VERSION }}
           draft: false
           prerelease: false
 
@@ -75,6 +75,6 @@ jobs:
         with:       
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./build/MyMusicApp.zip # 指定二进制压缩文件路径
-          asset_name: MyElectronMusicApp-${{ RELEASE_VERSION }}.zip
+          asset_name: MyElectronMusicApp-${{ env.RELEASE_VERSION }}.zip
           asset_content_type: application/zip
 
