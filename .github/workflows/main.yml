@@ -1,7 +1,5 @@
 name: Electron Build and Release
 
-
-
 on:
   workflow_dispatch:
 
@@ -56,7 +54,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./build/MyMusicApp.zip
+          asset_path: ./build/MyMusicApp.zip # 指定二进制压缩文件路径
           asset_name: MyElectronMusicApp-${{ github.run_number }}.zip
           asset_content_type: application/zip
 
