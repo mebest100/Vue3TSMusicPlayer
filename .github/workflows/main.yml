@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}              
-          upload_url: ${{ github.event.release.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./build/MyMusicApp.zip # 指定二进制压缩文件路径
           asset_name: MyElectronMusicApp-${{ github.run_number }}.zip
           asset_content_type: application/zip
