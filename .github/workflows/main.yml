@@ -19,12 +19,12 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install --force
-      - name: Install windows-build-tools
-      if: runner.os == 'Windows'
-      run: |
-         mkdir -p $HOME/AppData/Local/Temp
-         echo 'Closing installer. Return code: 3010.' > $HOME/AppData/Local/Temp/dd_client_.log
-         npm install --global windows-build-tools
+
+      - name: Install windows-build-tools       
+        run: |
+           mkdir -p $HOME/AppData/Local/Temp
+           echo 'Closing installer. Return code: 3010.' > $HOME/AppData/Local/Temp/dd_client_.log
+           npm install --global windows-build-tools
         
 
       - name: Build Electron
