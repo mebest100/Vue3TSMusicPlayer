@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '14'
-          
+
       - name: Install windows-build-tools       
         run: |           
            echo 'Closing installer. Return code: 3010.' > $env:TEMP\dd_client_.log
@@ -36,6 +36,7 @@ jobs:
       - name: Find exe files and zip
         run: |
           cd build
+          dir
           dir *.exe
           Compress-Archive -Path .\*.exe -DestinationPath MyMusicApp.zip
         
