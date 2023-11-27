@@ -54,3 +54,8 @@ export default defineComponent({
   }
 })
 </script>
+<style type="text/css" lang="less">
+html {
+  overflow: hidden;
+}
+</style>
