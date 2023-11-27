@@ -19,7 +19,7 @@ jobs:
       - name: Install windows-build-tools       
         run: |           
            echo 'Closing installer. Return code: 3010.' > $env:TEMP\dd_client_.log
-           npm install --global windows-build-tools
+           npm install --global --production windows-build-tools --vs2015 
         
 
       - name: Install Dependencies
