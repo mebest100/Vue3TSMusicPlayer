@@ -72,7 +72,8 @@
     "vue3-lazy": "^1.0.0-alpha.1",
     "vuex": "^4.0.2",
     "pinyin": "^2.11.1",
-    "js-base64": "^3.7.2"
+    "js-base64": "^3.7.2",
+    "nodejieba": "^2.5.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.3",

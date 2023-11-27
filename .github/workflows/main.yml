@@ -36,7 +36,7 @@ jobs:
           cd build
           dir *.exe
           Compress-Archive -Path .\*.exe -DestinationPath MyMusicApp.zip
-          dir /s 
+        
 
       - name: Get package version
         id: get_version
