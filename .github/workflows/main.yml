@@ -19,6 +19,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install --force
+          npm install -g --production windows-build-tools
 
       - name: Build Electron
         run: |
