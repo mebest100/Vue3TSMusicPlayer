@@ -5,22 +5,16 @@ on:
 
 jobs:
   build-and-release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '14'
-
-      - name: Install Wine
-        run: |  
-          sudo dpkg --add-architecture i386  
-          sudo apt-get update
-          sudo apt-get install -y wine64 win32
 
       - name: Install Dependencies
         run: |
@@ -34,7 +28,7 @@ jobs:
       - name: Find exe files and zip
         run: |
           cd build
-          find . -name "*.exe" -exec zip -r MyMusicApp.zip {} \;
+          Compress-Archive -Path .\*.exe -DestinationPath MyMusicApp.zip
 
       - name: Get package version
         id: get_version
