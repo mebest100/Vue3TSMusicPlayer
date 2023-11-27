@@ -8,16 +8,21 @@ const tunnel = require('tunnel')
 const fs = require('fs')
 const path = require('path')
 const tmpPath = require('os').tmpdir()
-const anonymous_tokenPath = path.resolve(tmpPath, "./anonymous_token");
 let anonymous_token
-
-try {
-  anonymous_token = fs.readFileSync(anonymous_tokenPath, 'utf-8')
-} catch (error) {
-  console.error(`Error reading file: ${anonymous_tokenPath}`)
-  // 在这里将anonymous_token的值置为空
+if (require('os').type() === 'Linux') {
   anonymous_token = ''
+} else {
+  const anonymous_tokenPath = path.resolve(tmpPath, './anonymous_token')
+
+  try {
+    anonymous_token = fs.readFileSync(anonymous_tokenPath, 'utf-8')
+  } catch (error) {
+    console.error(`Error reading file: ${anonymous_tokenPath}`)
+    // 在这里将anonymous_token的值置为空
+    anonymous_token = ''
+  }
 }
+
 const { URLSearchParams, URL } = require('url')
 // request.debug = true // 开启可看到更详细信息
 
