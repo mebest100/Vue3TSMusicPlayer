@@ -29,6 +29,8 @@ jobs:
 
 
       - name: Build Electron
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm run build
           npm run packapp 
