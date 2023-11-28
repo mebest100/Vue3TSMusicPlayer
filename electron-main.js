@@ -3,7 +3,6 @@ const express = require('express')
 const path = require('path')
 const compression = require('compression')
 const cookieParser = require('cookie-parser')
-const csrf = require('xsrf')
 const registerRouter = require('./backend/router')
 const cors = require('cors')
 // 注意electron-builder打包入口文件引入的依赖都不能放到dev-dependencies里面！因为放到里面就不会被打包！
@@ -12,20 +11,6 @@ const port = 9000
 const expressApp = express()
 expressApp.use(cookieParser())
 
-// Your existing Express server setup
-// const csrfProtection = csrf({
-//   cookie: true,
-//   ignoreMethods: ['HEAD', 'OPTIONS'],
-//   checkPathReg: /^\/api/
-// })
-
-// expressApp.use(csrfProtection)
-
-// expressApp.get('/', function (req, res, next) {
-//   res.cookie('XSRF-TOKEN', req.csrfToken())
-//   return next()
-// })
-
 expressApp.use(cors())
 
 // Register your routes using the provided function
@@ -33,15 +18,6 @@ registerRouter(expressApp)
 
 expressApp.use(compression())
 expressApp.use(express.static(path.join(__dirname, './dist')))
-
-expressApp.use(function (err, req, res, next) {
-  if (err.code !== 'EBADCSRFTOKEN') {
-    return next()
-  }
-
-  res.status(403)
-  res.send('<p>接口已经被我用 CSRF 保护了，请使用自己的服务器代理接口</p>')
-})
 
 console.log('Starting Electron process')
 // Start Express server
