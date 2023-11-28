@@ -16,10 +16,10 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install windows-build-tools       
-        run: |           
-           echo 'Closing installer. Return code: 3010.' > $env:TEMP\dd_client_.log
-           npm install --global --production windows-build-tools --vs2015 
+      # - name: Install windows-build-tools       
+      #   run: |           
+      #      echo 'Closing installer. Return code: 3010.' > $env:TEMP\dd_client_.log
+      #      npm install --global --production windows-build-tools --vs2015 
         
 
       - name: Install Dependencies
@@ -31,7 +31,7 @@ jobs:
       - name: Build Electron
         run: |
           npm run build
-          npm run packapp || true
+          npm run packapp 
 
       - name: Find exe files and zip
         run: |
@@ -59,8 +59,8 @@ jobs:
 
       # - name: Debug Create Release Output
       #   run: |
-      #      echo "Release ID: $RELEASE_ID"
-      #      echo "Release Upload URL: $RELEASE_UPLOAD_URL"
+      #      echo "Release ID: ${{ env.RELEASE_ID }}"
+      #      echo "Release Upload URL: ${{ env.RELEASE_UPLOAD_URL }}"
       #   env:
       #      RELEASE_ID: ${{ steps.create_release.outputs.id }}
       #      RELEASE_UPLOAD_URL: ${{ steps.create_release.outputs.upload_url }}
