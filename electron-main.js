@@ -90,6 +90,18 @@ app.commandLine.appendSwitch('no-sandbox')
 
 app.whenReady().then(() => {
   createWindow()
+  // 获取当前 session
+  const currentSession = mainWindow.webContents.session
+
+  // 注册请求拦截事件
+  currentSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    // 修改请求头部信息
+    details.requestHeaders['user-agent'] =
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.69'
+
+    // 调用回调函数，继续请求
+    callback({ cancel: false, requestHeaders: details.requestHeaders })
+  })
 })
 
 app.on('activate', function () {
